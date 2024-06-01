@@ -61,25 +61,31 @@ void ConnectFourServer::run() {
 			perror("ConnectFourServer::run() -> Fallo Accept");
 			continue;
 		}
+		std::cout << "Nuevo cliente conectado" << std::endl;
 		std::thread(&ConnectFourServer::handle_cliente, this, cliente_socket).detach();
 	}
 }
 
 void ConnectFourServer::handle_cliente(int cliente_socket) {
 	char tablero[TABLERO_FILAS][TABLERO_COLUMNAS];
+	std::cout << "inicializando tablero" << std::endl;
 	initialize_tablero(tablero);
-
+	std::cout << "tablero inicializado" << std::endl;
+	std::cout << "socket del cliente: " << cliente_socket << std::endl;
 	char buffer[1024] = {0};
 	int read_size;
 	char jugador = 'S';
+	std::cout << "buffer: " << buffer << std::endl;
 
         while((read_size = read(cliente_socket, buffer, 1024)) > 0) {
+		std::cout << "en while handle cliente" << std::endl;
                 mtx.lock();
+		std::cout << "jugada del cliente recibida: " << buffer << std::endl;
                 // inicio jugada del cliente
                 int col = buffer[0] - '0'; // se asume que el cliente envía un solo caracter, revisar
                 // actualizar tablero
                 for (int i = TABLERO_FILAS - 1; i>=0; --i) {
-                        if (tablero[i][col] == ' '){
+                        if (tablero[i][col] == '-'){
                                 tablero[i][col] = 'C';
                                 break;
                         }
@@ -95,7 +101,7 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
                 // inicio jugada servidor
 		int server_col = rand() % TABLERO_COLUMNAS;
 		for (int i = TABLERO_FILAS-1; i>=0; --i) {
-			if (tablero[i][server_col] == ' ') {
+			if (tablero[i][server_col] == '-') {
 				tablero[i][server_col] = 'S';
 				break;
 			}
@@ -110,7 +116,7 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 		for (int f=0; f<TABLERO_FILAS; ++f) {
 			for (int c=0; c<TABLERO_COLUMNAS; ++c) {
 				tablero_str += tablero[f][c];
-				tablero_str += ' ';
+				tablero_str += '-';
 			}
 			tablero_str += '\n';
 		}
@@ -118,13 +124,14 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 
 		mtx.unlock();
 	}
+	std::cout << "cliente desconectado" << std::endl;
 	close(cliente_socket);
 }
 
 void ConnectFourServer::initialize_tablero(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS]) {
 	for (int f=0; f<TABLERO_FILAS; ++f) {
 		for (int c=0; c<TABLERO_COLUMNAS; ++c) {
-			tablero[f][c] = ' ';
+			tablero[f][c] = '-';
 		}
 	}
 }
@@ -139,7 +146,7 @@ bool ConnectFourServer::check_ganador(char tablero[TABLERO_FILAS][TABLERO_COLUMN
 bool ConnectFourServer::tablero_lleno(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS]) {
 	for (int f=0; f<TABLERO_FILAS; ++f) {
 		for (int c=0; c<TABLERO_COLUMNAS; ++c) {
-			if(tablero[f][c] == ' ') return false;
+			if(tablero[f][c] == '-') return false;
 		}
 	}
 	return true;
@@ -148,7 +155,7 @@ bool ConnectFourServer::tablero_lleno(char tablero[TABLERO_FILAS][TABLERO_COLUMN
 void ConnectFourServer::imprimir_tablero(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS]) {
 	for (int f=0; f<TABLERO_FILAS; ++f) {
 		for (int c=0; c<TABLERO_COLUMNAS; ++c) {
-			std::cout << tablero[f][c] << ' ';
+			std::cout << tablero[f][c] << '-';
 		}
 		std::cout << std::endl;
 	}
