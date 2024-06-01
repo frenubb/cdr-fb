@@ -93,5 +93,69 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
                 }
 
                 // inicio jugada servidor
+		int server_col = rand() % TABLERO_COLUMNAS;
+		for (int i = TABLERO_FILAS-1; i>=0; --i) {
+			if (tablero[i][server_col] == ' ') {
+				tablero[i][server_col] = 'S';
+				break;
+			}
+		}
+		if (check_ganador(tablero, 'S')) {
+			send(cliente_sock, "Gana el SERVIDOR\n"), strlen("Gana el SERVIDOR\n"), 0);
+			break;
+		}
 
+		// enviar tablero al cliente
+		std::string tablero_str;
+		for (int f=0; f<TABLERO_FILAS; ++f) {
+			for (int c=0; c<TABLERO_COLUMNAS, ++c) {
+				tablero_str += tablero[f][c];
+				tablero_str += ' ';
+			}
+			tablero_str += '\n';
+		}
+		send(cliente_socket, tablero_str.c_str(), board_str.size(), 0);
+
+		mtx.unlock();
+	}
+	close(cliente_socket);
+}
+
+void ConnectFourServer::initialize_tablero(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS]) {
+	for (int f=0; f<TABLERO_FILAS; ++f) {
+		for (int c=0; c<TABLERO_COLUMNAS; ++c) {
+			tablero[f][c] = ' ';
+		}
+	}
+}
+
+bool ConnectFourServer::check_ganador(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS], char jugador) {
+	// Verificar horizontal
+	// Verificar vertical
+	// Verificar diagonal
+	return false;
+}
+
+bool ConnectFourServer::tablero_lleno(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS] {
+	for (int f=0; f<TABLERO_FILAS; ++f) {
+		for (int c=0; c<TABLERO_COLUMNAS; ++c) {
+			if(tablero[f][c] == ' ') return false;
+		}
+	}
+	return true;
+}
+
+void ConnectFourSErver::imprimir_tablero(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS]) {
+	for (int f=0; f<TABLERO_FILAS; ++f) {
+		for (int c=0; c<TABLERO_COLUMNAS; ++c) {
+			std::cout << board[f][c] << ' ';
+		}
+		std::cout << std::endl;
+	}
+}
+
+int main() {
+	ConnectFourServer server(PORT);
+	server.run();
+	return 0;
 }
