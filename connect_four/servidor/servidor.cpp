@@ -71,4 +71,27 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 
 	char buffer[1024] = {0};
 	int read_size;
+	char jugador = 'S'
+
+        while((read_size = read(client_socket, buffer, 1024)) > 0) {
+                mtx.lock();
+                // inicio jugada del cliente
+                int col = buffer[0] - '0' // se asume que el cliente envía un solo caracter, revisar
+                // actualizar tablero
+                for (int i = TABLERO_FILAS - 1; i>=0; --i) {
+                        if (tablero[i][col] == ' '){
+                                tablero[i][col] = 'C';
+                                break;
+                        }
+                }
+                if (check_ganador(tablero, 'C')) {
+                        send(cliente_socket, "Gana el Cliente\n", strlen("Gana el Cliente\n"), 0);
+                        break;
+                } else if (tablero_lleno(tablero)) {
+                        send(cliente_socket, "Se declara EMPATE\n", strlen("Se declara EMPATE\n"), 0);
+                        break;
+                }
+
+                // inicio jugada servidor
+
 }
