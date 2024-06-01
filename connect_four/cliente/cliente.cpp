@@ -25,10 +25,10 @@ int main(int argc, char const *argv[]) {
 	}
 
 	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(port)
+	serv_addr.sin_port = htons(port);
 
-	if (inet_pton(AF_INT, server_ip, $serv_addr.sin_addr) <=0){
-		std__cerr << "cliente.cpp main -> Direccion ip no valida" << std::endl;
+	if (inet_pton(AF_INET, server_ip, &serv_addr.sin_addr) <=0){
+		std::cerr << "cliente.cpp main -> Direccion ip no valida" << std::endl;
 		return -1;
 	}
 
@@ -44,13 +44,13 @@ int main(int argc, char const *argv[]) {
 }
 
 void jugar(int sock) {
-	char buffer[1024] = {0}
+	char buffer[1024] = {0};
 	while (true){
-		int valread = read(sock, buffer, 1024)
+		int valread = read(sock, buffer, 1024);
 		if(valread<=0){
 			break;
 		}
-		std::cout << buffer << std::endl
+		std::cout << buffer << std::endl;
 
 		std::string input;
 		std::cout << "Introduzca columna(0-6): ";
