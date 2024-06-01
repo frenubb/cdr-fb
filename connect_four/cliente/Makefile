@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++1
+CXXFLAGS = -std=c++11
 
 all: cliente
 

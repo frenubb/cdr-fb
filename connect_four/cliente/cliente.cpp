@@ -10,7 +10,7 @@ void jugar(int sock);
 int main(int argc, char const *argv[]) {
 	if (argc != 3) {
 		std::cerr << "Uso: "<< argv[0] << "<IP_SERVIDOR> <PUERTO>" << std::endl;
-		return -1
+		return -1;
 	}
 
 	const char *server_ip =argv[1];
@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]) {
 	struct sockaddr_in serv_addr;
 
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) <0){
-		std:cerr << "cliente.cpp main -> Error al crear el socket" << std::endl;
+		std::cerr << "cliente.cpp main -> Error al crear el socket" << std::endl;
 		return -1;
 	}
 
@@ -33,7 +33,7 @@ int main(int argc, char const *argv[]) {
 	}
 
 	if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0){
-		std::cerr << "cliente.cpp main -> Error de conexion << std::endl;"
+		std::cerr << "cliente.cpp main -> Error de conexion" << std::endl;
 		return -1;
 	}
 
