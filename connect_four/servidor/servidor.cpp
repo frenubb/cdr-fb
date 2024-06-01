@@ -75,7 +75,16 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 	char buffer[1024] = {0};
 	int read_size;
 	char jugador = 'S';
-	std::cout << "buffer: " << buffer << std::endl;
+	std::string tablero_str;
+                for (int f=0; f<TABLERO_FILAS; ++f) {
+                        for (int c=0; c<TABLERO_COLUMNAS; ++c) {
+                                tablero_str += tablero[f][c];
+                                tablero_str += ' ';
+                        }
+                        tablero_str += '\n';
+                }
+                send(cliente_socket, tablero_str.c_str(), tablero_str.size(), 0);
+
 
         while((read_size = read(cliente_socket, buffer, 1024)) > 0) {
 		std::cout << "en while handle cliente" << std::endl;
@@ -116,7 +125,7 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 		for (int f=0; f<TABLERO_FILAS; ++f) {
 			for (int c=0; c<TABLERO_COLUMNAS; ++c) {
 				tablero_str += tablero[f][c];
-				tablero_str += '-';
+				tablero_str += ' ';
 			}
 			tablero_str += '\n';
 		}
