@@ -3,6 +3,7 @@
 #include <vector>
 #include <mutex>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
 #include <cstdlib>
@@ -22,7 +23,7 @@ private:
 	struct sockaddr_in address;
 	int addrlen;
 
-	void handle_cliente(int cliente_socket);
+	void handle_cliente(int cliente_socket, const char* cliente_ip, int cliente_port);
 	void initialize_tablero(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS]);
 	bool check_ganador(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS], char jugador);
 	bool tablero_lleno(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS]);
@@ -55,18 +56,23 @@ ConnectFourServer::ConnectFourServer(int puerto) {
 void ConnectFourServer::run() {
 	std::cout << "Esperando conexiones..." << std::endl;
 	while (true) {
-		int cliente_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+		struct sockaddr_in cliente_address;
+		socklen_t cliente_addrlen = sizeof(cliente_address);
+		int cliente_socket = accept(server_fd, (struct sockaddr *)&cliente_address, &cliente_addrlen);
 		if (cliente_socket <0) {
 			perror("ConnectFourServer::run() -> Fallo Accept");
 			continue;
 		}
-		std::cout << "Juego nuevo [" << "ip" << ":" << cliente_socket << "]" << std::endl;
+		char cliente_ip[INET_ADDRSTRLEN];
+		inet_ntop(AF_INET,  &cliente_address.sin_addr, cliente_ip, INET_ADDRSTRLEN);
+		int cliente_port = ntohs(cliente_address.sin_port);
+		std::cout << "Juego nuevo [" << cliente_ip  << ":" << cliente_port << "]" << std::endl;
 		// std::cout << "Nuevo cliente conectado" << std::endl;
-		std::thread(&ConnectFourServer::handle_cliente, this, cliente_socket).detach();
+		std::thread(&ConnectFourServer::handle_cliente, this, cliente_socket, cliente_ip, cliente_port).detach();
 	}
 }
 
-void ConnectFourServer::handle_cliente(int cliente_socket) {
+void ConnectFourServer::handle_cliente(int cliente_socket, const char* cliente_ip, int cliente_port) {
 	char tablero[TABLERO_FILAS][TABLERO_COLUMNAS];
 	// std::cout << "inicializando tablero" << std::endl;
 	initialize_tablero(tablero);
@@ -88,7 +94,7 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 
         while((read_size = read(cliente_socket, buffer, 1024)) > 0) {
                 mtx.lock();
-		std::cout << "[" << "ip" << ":" << cliente_socket << "] cliente juega columna " << buffer << std::endl;
+		std::cout << "[" << cliente_ip << ":" << cliente_port << "] cliente juega columna " << buffer << std::endl;
 		// std::cout << "jugada del cliente recibida: " << buffer << std::endl;
                 // inicio jugada del cliente
                 int col = buffer[0] - '0'; // se asume que el cliente envía un solo caracter, revisar
