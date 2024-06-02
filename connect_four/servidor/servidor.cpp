@@ -55,23 +55,25 @@ ConnectFourServer::ConnectFourServer(int puerto) {
 
 void ConnectFourServer::run() {
 	std::cout << "Servidor escuchando en el puerto " << PORT << std::endl;
+	std::cout << "Esperando conexiones..." << std::endl;
 	while (true) {
 		int cliente_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 		if (cliente_socket <0) {
 			perror("ConnectFourServer::run() -> Fallo Accept");
 			continue;
 		}
-		std::cout << "Nuevo cliente conectado" << std::endl;
+		std::cout << "Juego nuevo [" << "ip" << ":" << cliente_socket << "]" << std::endl;
+		// std::cout << "Nuevo cliente conectado" << std::endl;
 		std::thread(&ConnectFourServer::handle_cliente, this, cliente_socket).detach();
 	}
 }
 
 void ConnectFourServer::handle_cliente(int cliente_socket) {
 	char tablero[TABLERO_FILAS][TABLERO_COLUMNAS];
-	std::cout << "inicializando tablero" << std::endl;
+	// std::cout << "inicializando tablero" << std::endl;
 	initialize_tablero(tablero);
-	std::cout << "tablero inicializado" << std::endl;
-	std::cout << "socket del cliente: " << cliente_socket << std::endl;
+	// std::cout << "tablero inicializado" << std::endl;
+	// std::cout << "socket del cliente: " << cliente_socket << std::endl;
 	char buffer[1024] = {0};
 	int read_size;
 	char jugador = 'S';
@@ -88,7 +90,8 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 
         while((read_size = read(cliente_socket, buffer, 1024)) > 0) {
                 mtx.lock();
-		std::cout << "jugada del cliente recibida: " << buffer << std::endl;
+		std::cout << "[" << "ip" << ":" << cliente_socket << "]" << "cliente juega columna " << buffer << std::endl;
+		// std::cout << "jugada del cliente recibida: " << buffer << std::endl;
                 // inicio jugada del cliente
                 int col = buffer[0] - '0'; // se asume que el cliente envía un solo caracter, revisar
                 // actualizar tablero
