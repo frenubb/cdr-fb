@@ -161,13 +161,13 @@ bool ConnectFourServer::check_ganador(char tablero[TABLERO_FILAS][TABLERO_COLUMN
 				}
 			}
 			// diagonal hacia arriba
-			if (f>=3 && c<4) {
+			if (f<3 && c<4) {
 				if(tablero[f][c] == jugador && tablero[f+1][c+1] == jugador && tablero[f+2][c+2] == jugador && tablero[f+3][c+3] == jugador) {
 					return true;
 				}
 			}
 			// diagonal hacia abajo
-			if (f<3 && c<4) {
+			if (f>=3 && c<4) {
 				if(tablero[f][c] == jugador && tablero[f-1][c+1] == jugador && tablero[f-2][c+2] == jugador && tablero[f-3][c+3] == jugador){
 					return true;
 				}
