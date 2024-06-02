@@ -11,5 +11,5 @@
   ```bash
   ./servidor 7623
   ```
-- podrá apreciar en su pantalla el mensaje "Esperando conexiones...", mantenga esta terminal abierta y abra una nueva
+- podrá apreciar en su pantalla el mensaje "Esperando conexiones...", mantenga esta terminal abierta para los siguientes pasos
 - a continuación, diríjase al directorio [cliente](./../cliente) y continúe con las instrucciones especificadas en el correspondiente README
