@@ -1,4 +1,4 @@
-# Instrucciones para ejecutar Cliente(s) desde la misma Computadora del Servidar
+# Instrucciones para ejecutar Cliente(s) desde la misma Computadora del Servidor
 - abra una nueva terminal y acceda al directorio cliente
   ```bash
   cd cdr-fb/connect_four/cliente
@@ -16,7 +16,7 @@
 > [!TIP]
 > Si desea abrir más de una partida en simultáneo, puede abrir una nueva terminal desde el mismo computador indicando la misma ip y puerto, se comenzará otra partida completamente ajena en cada terminal que desee ejecutar
 
-# Instrucciones para ejecutar Cliente(s) desde una Computadora distinta del Servidar
+# Instrucciones para ejecutar Cliente(s) desde una Computadora distinta del Servidor
 - únicamente será necesario que descargue y ejecute los archivos almacenados dentro del directorio cliente
 - abra una terminal y acceda al directorio
 - ejecute el archivo makefile utilizando el comando
