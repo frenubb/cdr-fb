@@ -3,6 +3,7 @@ Repositorio destinado a la Entrega de la Tarea 1 del curso de Comunicación de D
 
 ## Instrucciones
 Los archivos del proyecto se encuentran distribuidos de la siguiente forma:
+```bash
 connect_four/
 ├── cliente/
 │   ├── README.md
@@ -12,8 +13,8 @@ connect_four/
 │   ├── README.md
 │   ├── servidor.cpp
 │   └── Makefile
-
-En cada README se encuentran las instrucciones de ejecución del archivo correspondiente, para una correcta ejecución, se recomienda comenzar por el directorio servidor
+```
+En cada README se encuentran las instrucciones de ejecución del archivo correspondiente, para una correcta ejecución, se recomienda comenzar por el directorio [servidor] ./servidor/
 
 ## Integrantes
 
