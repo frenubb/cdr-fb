@@ -3,11 +3,11 @@ Repositorio destinado a la Entrega de la Tarea 1 del curso de Comunicación de D
 
 Trabajo realizado en Linux Ubuntu 24.04
 
-# Integrantes
+## Integrantes
 
-Francisco Barraza
+- Francisco Javier Barraza Rifo
+- Bayron Andrés Garri Mora
 
-Bayron Garri
 
 ## Instrucciones
 Para una correcta ejecución, será necesario realizar las siguientes instalaciones en su máquina Linux:
@@ -30,7 +30,3 @@ connect_four/
 ```
 En cada README se encuentran las instrucciones de ejecución del archivo correspondiente, para una correcta ejecución, se recomienda comenzar por el directorio [servidor](./connect_four/servidor/)
 
-## Integrantes
-
-- Francisco Javier Barraza Rifo
-- Bayron Andrés Garri Mora
