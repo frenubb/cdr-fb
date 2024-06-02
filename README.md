@@ -4,6 +4,7 @@ Repositorio destinado a la Entrega de la Tarea 1 del curso de Comunicación de D
 # Integrantes
 
 Francisco Barraza
+
 Bayron Garri
 
 Trabajo realizado en Linux Ubuntu 24.04
