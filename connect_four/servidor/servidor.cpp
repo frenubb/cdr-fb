@@ -7,7 +7,6 @@
 #include <cstring>
 #include <cstdlib>
 
-#define PORT 7777
 #define TABLERO_FILAS 6
 #define TABLERO_COLUMNAS 7
 
@@ -54,7 +53,6 @@ ConnectFourServer::ConnectFourServer(int puerto) {
 };
 
 void ConnectFourServer::run() {
-	std::cout << "Servidor escuchando en el puerto " << PORT << std::endl;
 	std::cout << "Esperando conexiones..." << std::endl;
 	while (true) {
 		int cliente_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
@@ -90,7 +88,7 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 
         while((read_size = read(cliente_socket, buffer, 1024)) > 0) {
                 mtx.lock();
-		std::cout << "[" << "ip" << ":" << cliente_socket << "]" << "cliente juega columna " << buffer << std::endl;
+		std::cout << "[" << "ip" << ":" << cliente_socket << "] cliente juega columna " << buffer << std::endl;
 		// std::cout << "jugada del cliente recibida: " << buffer << std::endl;
                 // inicio jugada del cliente
                 int col = buffer[0] - '0'; // se asume que el cliente envía un solo caracter, revisar
@@ -216,9 +214,13 @@ void ConnectFourServer::imprimir_tablero(char tablero[TABLERO_FILAS][TABLERO_COL
 	}
 }
 
-int main() {
-	ConnectFourServer server(PORT);
+int main(int argc, char *argv[]) {
+	if (argc != 2) {
+		std::cerr << "Uso: " << argv[0] << " <PUERTO>" << std::endl;
+		return -1;
+	}
+	int puerto = std::stoi(argv[1]);
+	ConnectFourServer server(puerto);
 	server.run();
 	return 0;
 }
-

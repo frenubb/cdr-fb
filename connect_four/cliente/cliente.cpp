@@ -3,8 +3,6 @@
 #include <unistd.h>
 #include <cstring>
 
-#define PORT 7777
-
 void jugar(int sock);
 
 int main(int argc, char const *argv[]) {
