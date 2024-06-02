@@ -50,8 +50,9 @@ void jugar(int sock) {
 		if(valread<=0){
 			break;
 		}
-		std::cout << buffer << std::endl;
 
+		system("clear");
+		std::cout << buffer << std::endl;
 		std::string input;
 		std::cout << "Introduzca columna(0-6): ";
 		std::cin >> input;
