@@ -54,6 +54,10 @@ void jugar(int sock) {
 		system("clear");
 		std::cout << buffer << std::endl;
 		std::string input;
+		if(strstr(buffer, "G") != nullptr){
+			std::cout << "[Has sido desconectado del Servidor]" << std::endl;
+			break;
+		}
 		std::cout << "Introduzca columna(0-6): ";
 		std::cin >> input;
 		send(sock, input.c_str(), input.length(), 0);
