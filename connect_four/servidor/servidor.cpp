@@ -100,7 +100,7 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
                         }
                 }
                 if (check_ganador(tablero, 'C')) {
-                        send(cliente_socket, "Gana el Cliente\n", strlen("Gana el Cliente\n"), 0);
+                        send(cliente_socket, "Gana el CLIENTE\n", strlen("Gana el CLIENTE\n"), 0);
                         break;
                 } else if (tablero_lleno(tablero)) {
                         send(cliente_socket, "Se declara EMPATE\n", strlen("Se declara EMPATE\n"), 0);
@@ -146,9 +146,34 @@ void ConnectFourServer::initialize_tablero(char tablero[TABLERO_FILAS][TABLERO_C
 }
 
 bool ConnectFourServer::check_ganador(char tablero[TABLERO_FILAS][TABLERO_COLUMNAS], char jugador) {
-	// Verificar horizontal
-	// Verificar vertical
-	// Verificar diagonal
+	for (int f=0; f<TABLERO_FILAS;++f){
+		for (int c=0; c<TABLERO_COLUMNAS; ++c){
+			// horizontal
+			if (c<4) {
+				if (tablero[f][c] == jugador && tablero[f][c+1] == jugador && tablero[f][c+2] == jugador && tablero[f][c+3] == jugador) {
+					return true;
+				}
+			}
+			// vertical
+			if (f<3) {
+				if(tablero[f][c] == jugador && tablero[f+1][c] == jugador && tablero[f+2][c] == jugador && tablero[f+3][c] == jugador) {
+					return true;
+				}
+			}
+			// diagonal hacia arriba
+			if (f>=3 && c<4) {
+				if(tablero[f][c] == jugador && tablero[f+1][c+1] == jugador && tablero[f+2][c+2] == jugador && tablero[f+3][c+3] == jugador) {
+					return true;
+				}
+			}
+			// diagonal hacia abajo
+			if (f<3 && c<4) {
+				if(tablero[f][c] == jugador && tablero[f-1][c+1] == jugador && tablero[f-2][c+2] == jugador && tablero[f-3][c+3] == jugador){
+					return true;
+				}
+			}
+		}
+	}
 	return false;
 }
 
