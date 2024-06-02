@@ -87,7 +87,6 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 
 
         while((read_size = read(cliente_socket, buffer, 1024)) > 0) {
-		std::cout << "en while handle cliente" << std::endl;
                 mtx.lock();
 		std::cout << "jugada del cliente recibida: " << buffer << std::endl;
                 // inicio jugada del cliente
@@ -99,11 +98,32 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
                                 break;
                         }
                 }
+
                 if (check_ganador(tablero, 'C')) {
+			// enviar tablero al cliente
+               		std::string tablero_str;
+               		for (int f=0; f<TABLERO_FILAS; ++f) {
+                        	for (int c=0; c<TABLERO_COLUMNAS; ++c) {
+                                	tablero_str += tablero[f][c];
+                                	tablero_str += ' ';
+                        	}
+                        	tablero_str += '\n';
+                	}
+                	send(cliente_socket, tablero_str.c_str(), tablero_str.size(), 0);
                         send(cliente_socket, "Gana el CLIENTE\n", strlen("Gana el CLIENTE\n"), 0);
                         break;
                 } else if (tablero_lleno(tablero)) {
-                        send(cliente_socket, "Se declara EMPATE\n", strlen("Se declara EMPATE\n"), 0);
+                        // enviar tablero al cliente
+                	std::string tablero_str;
+                	for (int f=0; f<TABLERO_FILAS; ++f) {
+                        	for (int c=0; c<TABLERO_COLUMNAS; ++c) {
+                                	tablero_str += tablero[f][c];
+                                	tablero_str += ' ';
+                        	}
+                        	tablero_str += '\n';
+                	}
+                	send(cliente_socket, tablero_str.c_str(), tablero_str.size(), 0);
+			send(cliente_socket, "Se declara EMPATE\n", strlen("Se declara EMPATE\n"), 0);
                         break;
                 }
 
@@ -115,22 +135,20 @@ void ConnectFourServer::handle_cliente(int cliente_socket) {
 				break;
 			}
 		}
+		// enviar tablero al cliente
+                std::string tablero_str;
+                for (int f=0; f<TABLERO_FILAS; ++f) {
+                        for (int c=0; c<TABLERO_COLUMNAS; ++c) {
+                                tablero_str += tablero[f][c];
+                                tablero_str += ' ';
+                        }
+                        tablero_str += '\n';
+                }
+                send(cliente_socket, tablero_str.c_str(), tablero_str.size(), 0);
 		if (check_ganador(tablero, 'S')) {
 			send(cliente_socket, "Gana el SERVIDOR\n", strlen("Gana el SERVIDOR\n"), 0);
 			break;
 		}
-
-		// enviar tablero al cliente
-		std::string tablero_str;
-		for (int f=0; f<TABLERO_FILAS; ++f) {
-			for (int c=0; c<TABLERO_COLUMNAS; ++c) {
-				tablero_str += tablero[f][c];
-				tablero_str += ' ';
-			}
-			tablero_str += '\n';
-		}
-		send(cliente_socket, tablero_str.c_str(), tablero_str.size(), 0);
-
 		mtx.unlock();
 	}
 	std::cout << "cliente desconectado" << std::endl;
