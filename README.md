@@ -14,7 +14,7 @@ connect_four/
 │   ├── servidor.cpp
 │   └── Makefile
 ```
-En cada README se encuentran las instrucciones de ejecución del archivo correspondiente, para una correcta ejecución, se recomienda comenzar por el directorio [servidor] ./servidor/
+En cada README se encuentran las instrucciones de ejecución del archivo correspondiente, para una correcta ejecución, se recomienda comenzar por el directorio [servidor](./servidor/)
 
 ## Integrantes
 
